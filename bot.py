@@ -52,7 +52,6 @@ def ratingbot():
         browser.close()
         Timer(3600, ratingbot).start()  # Waiting 1 hour
     else:
-        diff = 0
         browser.get(number_url)
         number = browser.find_element_by_xpath(xpath_of_the_specialty + '/following::p[2]').text
         diff = placement - rating
@@ -62,7 +61,7 @@ def ratingbot():
                     'text': 'Погружение! Текущее место в рейтинге абитуриентов ' + ratingDate.lower() + ': ' + str(rating) + ' из ' + str(number) + '(' + str(diff) + ')'}
             r = requests.post(url, data=data)
             print(r.status_code, r.reason)
-        if diff < 0:
+        if diff > 0:
             url = 'https://api.telegram.org/bot' + tg_token + '/sendMessage'
             data = {'chat_id': chat_id,
                     'text': 'Оп-оп! Живём-живём! Текущее место в рейтинге абитуриентов ' + ratingDate.lower() + ': ' + str(rating) + ' из ' + str(number) + '(+' + str(diff) + ')'}
